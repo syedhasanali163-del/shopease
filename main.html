@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopEase | Online Store</title>
+
+  <!-- INTERNAL CSS -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f6f8fa;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background: #1e90ff;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 15px 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    header input {
+      flex: 1;
+      min-width: 220px;
+      max-width: 400px;
+      margin: 5px 15px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 25px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    .cart {
+      font-size: 22px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    /* Product Grid */
+    .product-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 25px;
+      padding: 40px 25px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .card .info {
+      padding: 15px;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .card p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .card button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      background: #1e90ff;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card button:hover {
+      background: #0073e6;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      header input {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .cart {
+        font-size: 20px;
+        margin-top: 10px;
+      }
+
+      .card img {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card img {
+        height: 180px;
+      }
+
+      .card h3 {
+        font-size: 16px;
+      }
+
+      .card p {
+        font-size: 13px;
+      }
+
+      .card button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <h1>ShopEase</h1>
+    <input type="text" id="search" placeholder="Search products...">
+    <div class="cart">
+      🛒 <span id="cart-count">0</span>
+    </div>
+  </header>
+
+  <!-- PRODUCTS -->
+  <section class="product-container" id="product-container">
+    <!-- JS se load honge -->
+  </section>
+
+  <!-- INTERNAL JS -->
+  <script>
+    const products = [
+      { id: 1, name: "Smart Watch", price: 4500, image: "https://via.placeholder.com/300x220?text=Smart+Watch" },
+      { id: 2, name: "Wireless Headphones", price: 2800, image: "https://via.placeholder.com/300x220?text=Headphones" },
+      { id: 3, name: "Gaming Mouse", price: 1600, image: "https://via.placeholder.com/300x220?text=Gaming+Mouse" },
+      { id: 4, name: "Leather Wallet", price: 1200, image: "https://via.placeholder.com/300x220?text=Wallet" },
+      { id: 5, name: "Sunglasses", price: 999, image: "https://via.placeholder.com/300x220?text=Sunglasses" },
+      { id: 6, name: "Bluetooth Speaker", price: 3200, image: "https://via.placeholder.com/300x220?text=Speaker" },
+    ];
+
+    const productContainer = document.getElementById("product-container");
+    const searchInput = document.getElementById("search");
+    const cartCount = document.getElementById("cart-count");
+    let cart = [];
+
+    function displayProducts(items) {
+      productContainer.innerHTML = "";
+      items.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="info">
+            <h3>${item.name}</h3>
+            <p>PKR ${item.price}</p>
+            <button onclick="addToCart(${item.id})">Add to Cart</button>
+          </div>
+        `;
+        productContainer.appendChild(card);
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push(product);
+      cartCount.textContent = cart.length;
+      alert(`${product.name} added to cart!`);
+    }
+
+    searchInput.addEventListener("input", (e) => {
+      const searchText = e.target.value.toLowerCase();
+      const filtered = products.filter(p => p.name.toLowerCase().includes(searchText));
+      displayProducts(filtered);
+    });
+
+    displayProducts(products);
+  </script>
+</body>
+</html>
