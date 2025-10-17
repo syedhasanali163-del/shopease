@@ -1,0 +1,8 @@
+# Allow all search engines to crawl everything
+User-agent: *
+Allow: /
+
+# Disallow some unnecessary files or folders (optional)
+Disallow: /admin/
+Disallow: /login/
+Disallow: /private/
